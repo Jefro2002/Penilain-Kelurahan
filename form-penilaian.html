@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Form Penilaian Layanan Kelurahan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .form-content {
+            padding: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .rating-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .rating-option {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .rating-option input {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        
+        .rating-option input:checked + label {
+            background: #2a5298;
+            color: white;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            font-size: 14px;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .message.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdef5;
+            display: block;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 16px;
+            background: #f8f9fa;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Survei Kepuasan Pelayanan</h1>
+            <p>Kami menghargai setiap masukan dari Anda</p>
+        </div>
+        
+        <div class="form-content">
+            <form id="surveyForm">
+                <div class="form-group">
+                    <label for="nama_warga">
+                        Nama Lengkap
+                        <span class="required">(Opsional)</span>
+                    </label>
+                    <input type="text" id="nama_warga" name="nama_warga" 
+                           placeholder="Masukkan nama Anda">
+                </div>
+                
+                <div class="form-group">
+                    <label for="layanan">
+                        Layanan yang Digunakan
+                        <span class="required">*</span>
+                    </label>
+                    <select id="layanan" name="layanan" required>
+                        <option value="">-- Pilih Layanan --</option>
+                        <option value="Administrasi Kependudukan">Administrasi Kependudukan (KTP, KK, dll)</option>
+                        <option value="Surat Keterangan">Surat Keterangan (Domisili, Tidak Mampu, dll)</option>
+                        <option value="Pengaduan Masyarakat">Pengaduan Masyarakat</option>
+                        <option value="Informasi Publik">Informasi Publik</option>
+                        <option value="Layanan Umum">Layanan Umum Lainnya</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        Tingkat Kepuasan
+                        <span class="required">*</span>
+                    </label>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="kepuasan" id="rating1" value="Sangat Puas" required>
+                            <label for="rating1">😍 Sangat Puas</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="kepuasan" id="rating2" value="Puas">
+                            <label for="rating2">😊 Puas</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="kepuasan" id="rating3" value="Cukup">
+                            <label for="rating3">😐 Cukup</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="kepuasan" id="rating4" value="Kurang">
+                            <label for="rating4">😞 Kurang</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="kepuasan" id="rating5" value="Tidak Puas">
+                            <label for="rating5">😤 Tidak Puas</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="saran">
+                        Kritik & Saran
+                        <span class="required">(Opsional)</span>
+                    </label>
+                    <textarea id="saran" name="saran" 
+                              placeholder="Tulis kritik, saran, atau masukan Anda untuk perbaikan layanan..."></textarea>
+                </div>
+                
+                <button type="submit" id="submitBtn">
+                    ✨ Kirim Penilaian
+                </button>
+                
+                <div id="formMessage" class="message"></div>
+            </form>
+        </div>
+        
+        <footer>
+            Terima kasih atas partisipasi Anda dalam meningkatkan kualitas pelayanan
+        </footer>
+    </div>
+
+    <script>
+        // ⚠️ GANTI URL INI DENGAN URL WEB APP DARI GOOGLE APPS SCRIPT ⚠️
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwjforhkMsiToUHLpedLd-RjP6wQT0b9-wBcgeqIGrkU4Cd62L44lHmTnb_LTGhRmK4/exec'
+        
+        const form = document.getElementById('surveyForm')
+        const messageDiv = document.getElementById('formMessage')
+        const submitBtn = document.getElementById('submitBtn')
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault()
+            
+            // Tampilkan loading
+            messageDiv.className = 'message loading'
+            messageDiv.textContent = '📤 Mengirim data...'
+            submitBtn.disabled = true
+            submitBtn.style.opacity = '0.6'
+            
+            // Kumpulkan data dari form
+            const formData = new FormData(form)
+            
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                })
+                
+                const result = await response.json()
+                
+                if (result.result === 'success') {
+                    // Sukses
+                    messageDiv.className = 'message success'
+                    messageDiv.textContent = '✅ Terima kasih! Penilaian Anda telah tersimpan.'
+                    form.reset()
+                    
+                    // Auto hide setelah 5 detik
+                    setTimeout(() => {
+                        messageDiv.className = 'message'
+                        messageDiv.textContent = ''
+                    }, 5000)
+                } else {
+                    throw new Error(result.error || 'Gagal menyimpan')
+                }
+                
+            } catch (error) {
+                console.error('Error:', error)
+                messageDiv.className = 'message error'
+                messageDiv.textContent = '❌ Gagal mengirim. Silakan coba lagi.'
+                
+                setTimeout(() => {
+                    if (messageDiv.className === 'message error') {
+                        messageDiv.className = 'message'
+                        messageDiv.textContent = ''
+                    }
+                }, 5000)
+            } finally {
+                submitBtn.disabled = false
+                submitBtn.style.opacity = '1'
+            }
+        })
+    </script>
+</body>
+</html>
